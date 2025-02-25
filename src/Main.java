@@ -55,8 +55,8 @@ public class Main {
        Random rand = new Random();
         int i = 0;
 
-        int[] aggScore1 = new int[pot.getTeams().size() ];
-        int[] aggScore2 = new int[pot.getTeams().size() ];
+        int[] aggScore1 = new int[pot.getTeams().size()];
+        int[] aggScore2 = new int[pot.getTeams().size()];
 
         while(i < pot.getTeams().size())
         {
@@ -85,6 +85,7 @@ public class Main {
         }
 
         System.out.println();
+        WinnersPot quarterFinals = new WinnersPot();
         System.out.println("Aggregate Scores");
         int n = 0;
         while(n < pot.getTeams().size())
@@ -106,9 +107,22 @@ public class Main {
                 aggScore2[n+1] = goals2;
 
             }
+
+            if(aggScore1[n] > aggScore2[n+1]){
+                //add team 1 into winners pot
+                quarterFinals.addTeam(pot.getTeams().get(n));
+            }
+            else{
+                quarterFinals.addTeam(pot.getTeams().get(n+1));
+                //add  team 2 into winners pot
+            }
             n++;
             n++;
+
         }
+        System.out.println();
+        System.out.println("Qualifying Teams");
+        quarterFinals.displayPot2();
 
     }
 
