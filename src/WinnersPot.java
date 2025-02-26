@@ -3,18 +3,21 @@ import java.util.List;
 
 public class WinnersPot {
 
-    private ArrayList<Team> quarterFinals;
+    private ArrayList<Team> winningTeams;
     public WinnersPot(){
-        quarterFinals = new ArrayList<>();
+        winningTeams = new ArrayList<>();
     }
     public void addTeam(Team team){
-        quarterFinals.add(team);
+        winningTeams.add(team);
+    }
+    public void removeTeam(Team team){
+        winningTeams.remove(team);
     }
     public List<Team> getTeams() {
-        return quarterFinals;
+        return winningTeams;
     }
     public void displayPot2() {
-        for (Team team : quarterFinals) {
+        for (Team team : winningTeams) {
             System.out.println("Team: " + team.getName() + ", " + team.getCountry());
         }
     }

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -85,7 +87,7 @@ public class Main {
         }
 
         System.out.println();
-        WinnersPot quarterFinals = new WinnersPot();
+        WinnersPot winnersPot = new WinnersPot();
         System.out.println("Aggregate Scores");
         int n = 0;
         while(n < pot.getTeams().size())
@@ -110,10 +112,10 @@ public class Main {
 
             if(aggScore1[n] > aggScore2[n+1]){
                 //add team 1 into winners pot
-                quarterFinals.addTeam(pot.getTeams().get(n));
+                winnersPot.addTeam(pot.getTeams().get(n));
             }
             else{
-                quarterFinals.addTeam(pot.getTeams().get(n+1));
+                winnersPot.addTeam(pot.getTeams().get(n+1));
                 //add  team 2 into winners pot
             }
             n++;
@@ -122,7 +124,81 @@ public class Main {
         }
         System.out.println();
         System.out.println("Qualifying Teams");
-        quarterFinals.displayPot2();
+        winnersPot.displayPot2();
+        System.out.println();
+
+        int a = 0;
+        int[] q_aggScore1 = new int[winnersPot.getTeams().size()];
+        int[] q_aggScore2 = new int[winnersPot.getTeams().size()];
+
+        while(a < winnersPot.getTeams().size())
+        {
+            int goals1 = rand.nextInt(9);
+            int goals2 = rand.nextInt(9);
+            System.out.println("Home: " + winnersPot.getTeams().get(a) + " " + goals1 + " " + winnersPot.getTeams().get(a+1) + " " + goals2);
+            q_aggScore1[a] = goals1;
+            q_aggScore2[a+1] = goals2;
+            a++;
+            a++;
+        }
+        System.out.println();
+
+        int b = 0;
+        while(b < winnersPot.getTeams().size())
+        {
+            int goals1 = rand.nextInt(9);
+            int goals2 = rand.nextInt(9);
+            System.out.println("Away: " + winnersPot.getTeams().get(b+1) + " " + goals2 + " " + winnersPot.getTeams().get(b) + " " + goals1);
+            q_aggScore1[b] += goals1;
+            q_aggScore2[b+1] += goals2;
+            b++;
+            b++;
+        }
+
+        System.out.println();
+        System.out.println("Aggregate Scores");
+        int c = 0;
+        while(c < winnersPot.getTeams().size())
+        {
+            System.out.println(winnersPot.getTeams().get(c) + " " + q_aggScore1[c] + " " + winnersPot.getTeams().get(c+1) + " " + q_aggScore2[c+1]);
+
+            while(q_aggScore1[c] == q_aggScore2[c+1]){
+
+                System.out.println(winnersPot.getTeams().get(c) + " And " + winnersPot.getTeams().get(c +1) + " Have Tied ");
+                int goals1 = rand.nextInt(6);
+                int goals2 = rand.nextInt(6);
+                if(goals1 == goals2){
+                    System.out.println("Round of penalties tied! Next Round");
+                    continue;
+                }
+
+                System.out.println("Penalties Score: " + winnersPot.getTeams().get(c) + " " + goals1 + " " + winnersPot.getTeams().get(c+1) + " " + goals2);
+                q_aggScore1[c] = goals1;
+                q_aggScore2[c+1] = goals2;
+
+            }
+            c++;
+            c++;
+        }
+
+        System.out.println();
+
+        List<Team> advancingTeams = new ArrayList<>();
+
+        for (int z = 0; z < winnersPot.getTeams().size(); z += 2) {
+            if (q_aggScore1[z] > q_aggScore2[z+1]) {
+                advancingTeams.add(winnersPot.getTeams().get(z));  // Winner advances
+            } else {
+                advancingTeams.add(winnersPot.getTeams().get(z+1));  // Other team advances
+            }
+        }
+
+        winnersPot.getTeams().clear();
+        winnersPot.getTeams().addAll(advancingTeams);
+        // Clear original list and add only winners
+        //Figure how to deal with this part; array not mapped to arraylist
+
+        winnersPot.displayPot2();
 
     }
 
