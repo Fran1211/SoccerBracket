@@ -181,6 +181,7 @@ public class Main {
             c++;
         }
 
+
         System.out.println();
 
         List<Team> advancingTeams = new ArrayList<>();
@@ -196,9 +197,109 @@ public class Main {
         winnersPot.getTeams().clear();
         winnersPot.getTeams().addAll(advancingTeams);
         // Clear original list and add only winners
-        //Figure how to deal with this part; array not mapped to arraylist
-
+        System.out.println("Qualifying Teams");
         winnersPot.displayPot2();
+
+        int[] s_aggScore1 = new int[winnersPot.getTeams().size()];
+        int[] s_aggScore2 = new int[winnersPot.getTeams().size()];
+        System.out.println();
+
+        int h = 0;
+        while (h < winnersPot.getTeams().size()){
+            int goals1 = rand.nextInt(9);
+            int goals2 = rand.nextInt(9);
+
+            System.out.println("Home: " + winnersPot.getTeams().get(h) + " " + goals1 + " " + winnersPot.getTeams().get(h+1) + " " + goals2);
+            s_aggScore1[h] = goals1;
+            s_aggScore2[h+1] = goals2;
+
+            h++;
+            h++;
+        }
+        System.out.println();
+        int l = 0;
+        while(l < winnersPot.getTeams().size()){
+            int goals1 = rand.nextInt(9);
+            int goals2 = rand.nextInt(9);
+
+            System.out.println("Away: " + winnersPot.getTeams().get(l+1) + " " + goals2 + " " + winnersPot.getTeams().get(l) + " " + goals1);
+            s_aggScore1[l] += goals1;
+            s_aggScore2[l+1] += goals2;
+
+            l++;
+            l++;
+        }
+        System.out.println();
+
+        System.out.println("Aggregate Scores");
+        int g = 0;
+        while(g < winnersPot.getTeams().size())
+        {
+            System.out.println(winnersPot.getTeams().get(g) + " " + s_aggScore1[g] + " " + winnersPot.getTeams().get(g+1) + " " + s_aggScore2[g+1]);
+
+            while(s_aggScore1[g] == s_aggScore2[g+1]){
+
+                System.out.println(winnersPot.getTeams().get(g) + " And " + winnersPot.getTeams().get(g +1) + " Have Tied ");
+                int goals1 = rand.nextInt(6);
+                int goals2 = rand.nextInt(6);
+                if(goals1 == goals2){
+                    System.out.println("Round of penalties tied! Next Round");
+                    continue;
+                }
+
+                System.out.println("Penalties Score: " + winnersPot.getTeams().get(g) + " " + goals1 + " " + winnersPot.getTeams().get(g+1) + " " + goals2);
+                s_aggScore1[g] = goals1;
+                s_aggScore2[g+1] = goals2;
+
+            }
+            g++;
+            g++;
+        }
+
+        System.out.println();
+        System.out.println("Final");
+
+        advancingTeams.clear();
+
+        for (int z = 0; z < winnersPot.getTeams().size(); z += 2) {
+            if (s_aggScore1[z] > s_aggScore2[z+1]) {
+                advancingTeams.add(winnersPot.getTeams().get(z));  // Winner advances
+            } else {
+                advancingTeams.add(winnersPot.getTeams().get(z+1));  // Other team advances
+            }
+        }
+
+        winnersPot.getTeams().clear();
+        winnersPot.getTeams().addAll(advancingTeams);
+
+        int goals1 = rand.nextInt(9);
+        int goals2 = rand.nextInt(9);
+        System.out.println(winnersPot.getTeams().get(0) + " " + goals1 + " " + winnersPot.getTeams().get(1) + " " + goals2);
+
+        while(goals1 == goals2){
+
+            System.out.println(winnersPot.getTeams().get(0) + " And " + winnersPot.getTeams().get(1) + " Have Tied ");
+            int goals_1 = rand.nextInt(6);
+            int goals_2 = rand.nextInt(6);
+            if(goals_1 == goals_2){
+                System.out.println("Round of penalties tied! Next Round");
+                continue;
+            }
+            goals1 = goals_1;
+            goals2 = goals_2;
+
+            System.out.println("Penalties Score: " + winnersPot.getTeams().get(0) + " " + goals1 + " " + winnersPot.getTeams().get(1) + " " + goals2);
+
+        }
+
+        System.out.println();
+
+        if(goals1 > goals2){
+            System.out.println("Champions!\n" + winnersPot.getTeams().get(0));
+        }
+        else{
+            System.out.println("Champions!\n" + winnersPot.getTeams().get(1));
+        }
 
     }
 
